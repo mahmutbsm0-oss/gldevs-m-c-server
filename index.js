@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const SERVER_IP = "gldevs.aternos.me"; // değiştir
+const SERVER_IP = "gldev.aternos.me"; // değiştir
 
 async function pingServer() {
     try {
