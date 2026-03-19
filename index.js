@@ -1,18 +1,28 @@
-const axios = require("axios");
+const mineflayer = require('mineflayer');
 
-const SERVER_IP = "gldev.aternos.me"; // değiştir
+const host = 'gldev.aternos.me'; // değiştir
+const username = 'AFK_Bot' + Math.floor(Math.random() * 1000);
 
-async function pingServer() {
-    try {
-        const res = await axios.get(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
-        console.log("Ping atıldı:", new Date().toLocaleTimeString());
-    } catch (err) {
-        console.log("Hata:", err.message);
-    }
+function createBot() {
+    const bot = mineflayer.createBot({
+        host: host,
+        port: 55243,
+        username: username,
+        version: false
+    });
+
+    bot.on('spawn', () => {
+        console.log('✅ Bot sunucuya girdi!');
+    });
+
+    bot.on('end', () => {
+        console.log('❌ Bot atıldı, tekrar bağlanıyor...');
+        setTimeout(createBot, 5000);
+    });
+
+    bot.on('error', (err) => {
+        console.log('Hata:', err.message);
+    });
 }
 
-// her 5 dakikada bir ping
-setInterval(pingServer, 5 * 60 * 1000);
-
-// ilk başta da çalışsın
-pingServer();
+createBot();
